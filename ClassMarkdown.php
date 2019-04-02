@@ -13,6 +13,7 @@ include_once(__DIR__ . '/TextTable.php');
 class ClassMarkdown
 {
     public $file;
+    public $info;
 
     /**
      * ClassMarkdown constructor.
@@ -33,7 +34,7 @@ class ClassMarkdown
             $row = array();
             $description = array();
             $parameters = array();
-            $return = '';
+            $return = 'void';
             $row[] = $key;
             $value['doc'] = trim(str_replace(array("\r", "*", "/", '@', '|'), array('', '', '', '', '\|'), $value['doc']));
             $value['doc'] = explode("\n", $value['doc']);
@@ -59,6 +60,32 @@ class ClassMarkdown
         return $rows;
     }
 
+
+    /**
+     * Parse a given class var for extended info
+     * @param $class
+     * @return $string
+     */
+    protected static function parseExtended($class)
+    {
+        $info = $class['name'];
+
+        foreach ($class['doc'] as $line) {
+            $line = trim(preg_replace('~[.[:cntrl:]]~', '', $line));
+            if (preg_match('/^descrip/i', $line)) {
+                $info .= ', '.$line;
+                $moretry = TRUE;
+            } else {
+                $info = $line;
+                $moretry = FALSE;
+            }
+            if(!$moretry)
+                break;
+        }
+        return $info;
+    }
+    
+
     /**
      * Get markdown class documentation
      * @param $file
@@ -75,6 +102,7 @@ class ClassMarkdown
             $result .= "### " . $class['name'] . PHP_EOL . PHP_EOL;
             $rows = self::parseClass($class);
             $columns = ['Method', 'Description', 'Type', 'Parameters', 'Return'];
+            //$result .= $this->info . PHP_EOL . PHP_EOL;
             $t = new TextTable($columns, $rows);
             $result .= $t->render();
             $result .= PHP_EOL . PHP_EOL;
