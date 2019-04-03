@@ -88,7 +88,7 @@ class TextTable {
 			        .str_repeat('-', $l)
 			        .(isset($this->align[$key]) && ($this->align[$key] == 'C' || $this->align[$key] == 'R') ? ':' : ' ')
 			        .'|';
-		return $res."\r\n";
+		return $res."\n";
 	}
 
 	/**
@@ -103,7 +103,7 @@ class TextTable {
 			$res .= ' '.$row[$key].($l > strlen($row[$key]) ? str_repeat(' ', $l - strlen($row[$key])) : '').' |';
 		}
 
-		return $res."\r\n";
+		return $res."\n";
 	}
 
 	/**
