@@ -7,9 +7,9 @@ Based and forked directly from Marco Cesarato's PHP Class Markdown Documentation
 
 ## Description
 
-convert primitives PHPDoc comments from classes into Markdown.
+Convert primitives PHPDoc comments from classes into Markdown.
 
-by parsing a class file with a given file name 
+By parsing a class file with a given file name 
 and extracts the documentation of its functions and variables that it 
 but in primitive PHPDoc format, 
 then convert the extracted documentation into a file in Markdown format.
@@ -27,7 +27,7 @@ then convert the extracted documentation into a file in Markdown format.
 ### Usage
 
 ```php
-php "ClassMarkdown::printMarkdown('CoreClass.php');" >> ver.md
+php "include 'ClassMarkdown.php'; ClassMarkdown::printMarkdown('CoreClass.php');" >> ver.md
 ```
 
 
