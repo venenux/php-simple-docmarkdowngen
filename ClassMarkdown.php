@@ -5,7 +5,8 @@ include_once(__DIR__ . '/TextTable.php');
 /**
  * Class Markdown Docs
  * @author Marco Cesarato <cesarato.developer@gmail.com>
- * @copyright Copyright (c) 2018
+ * @author PICCORO Lenz McKAY <mckaygerhard@gmail.com>
+ * @copyright Copyright (c) 2018, 2019
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
  * @link https://github.com/marcocesarato/PHP-Class-Markdown-Docs
  * @version 0.1.9
@@ -13,7 +14,6 @@ include_once(__DIR__ . '/TextTable.php');
 class ClassMarkdown
 {
     public $file;
-    public $info;
 
     /**
      * ClassMarkdown constructor.
@@ -48,7 +48,7 @@ class ClassMarkdown
                     $line = str_replace('return ', '', $line);
                     $return = $line;
                 } else {
-                    $description[] = $line;
+                    $description[] = substr($line,0,40);
                 }
             }
             $row[] = implode('<br>', $description);
@@ -64,25 +64,44 @@ class ClassMarkdown
     /**
      * Parse a given class var for extended info
      * @param $class
-     * @return $string
+     * @return string
      */
     protected static function parseExtended($class)
     {
-        $info = $class['name'];
-
+        $name = $class['name'];
+        $autor = '';
+        $description = NULL;
+        $coping = '(c) '.date('Y');
+        $class['doc'] = trim(str_replace(array("\r", "*", "/", '|'), array('', '', '', '', '\|'), $class['doc']));
+        $class['doc'] = explode("\n", $class['doc']);
         foreach ($class['doc'] as $line) {
-            $line = trim(preg_replace('~[.[:cntrl:]]~', '', $line));
-            if (preg_match('/^descrip/i', $line)) {
-                $info .= ', '.$line;
-                $moretry = TRUE;
-            } else {
-                $info = $line;
-                $moretry = FALSE;
+            if (is_null($description)){
+                $description = substr($line,0,50);
             }
-            if(!$moretry)
-                break;
+            if (strpos($line, 'uthor') !== FALSE) {
+                $line = str_replace('@author ', '', $line);
+                $autor .= '* '.$line. PHP_EOL;
+            }
+            $line = str_replace('@', '', $line);
+            if (strpos($line, 'ersion') !== FALSE) {
+                $version = trim(preg_replace('~[[:cntrl:]]~', '', $line));
+                $version = $version;
+            }else {
+                $line = trim(preg_replace('~[.[:cntrl:]]~', '', $line));
+                if (preg_match('/^param/i', $line)) {
+                    $line = str_replace('param ', '', $line);
+                    $parameters = $line;
+                } else if (preg_match('/^copyright/i', $line)) {
+                    $line = str_replace('\|', '<br>', $line);
+                    $line = str_replace('copyright ', '', $line);
+                    $coping = $line;
+                }
+			}
         }
-        return $info;
+        $info = '**'.$name.', '.$version.'**: '.$description. PHP_EOL. PHP_EOL;
+        $info .= $coping. PHP_EOL. PHP_EOL;
+        $info .= $autor;
+        return $info. PHP_EOL;
     }
     
 
@@ -102,7 +121,7 @@ class ClassMarkdown
             $result .= "### " . $class['name'] . PHP_EOL . PHP_EOL;
             $rows = self::parseClass($class);
             $columns = ['Method', 'Description', 'Type', 'Parameters', 'Return'];
-            //$result .= $this->info . PHP_EOL . PHP_EOL;
+            $result .= self::parseExtended($class);
             $t = new TextTable($columns, $rows);
             $result .= $t->render();
             $result .= PHP_EOL . PHP_EOL;
