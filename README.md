@@ -1,9 +1,14 @@
 # php-simple-docmarkdowngen
 
 Simple php markdown document generator from clases.. 
-is a take of improvement for CI and Guachi first attempt
+is a take of improvement for CI and Guachi first attempt .
 
 Based and forked directly from Marco Cesarato's PHP Class Markdown Documentation
+
+* web Page: https://venenux.github.io/php-simple-docmarkdowngen/
+* Download: https://gitlab.com/venenux/php-simple-docmarkdowngen
+
+**YEAH!: hosted at gitlab baby!**
 
 ## Description
 
@@ -70,3 +75,10 @@ Copyright (c) 2018, 2019
 | exists        | Check if element already exists if exists it will be updated on Save else it will be inserted |        | null $what<br>bool $undelete                       | bool           |
 | retrieve      | Retrieve element                                   |        | null $what<br>bool $encode<br>null $onlyFields<br>null $orderBy<br>bool $returnAsArray<br>null $operators<br>bool $dump | array<br>mixed |
 | fetch         |                                                    |        | $what<br>null $operators                           | array          |
+
+
+* web Page: https://venenux.github.io/php-simple-docmarkdowngen/
+* Download: https://gitlab.com/venenux/php-simple-docmarkdowngen
+
+**YEAH!: hosted at gitlab baby!**
+
