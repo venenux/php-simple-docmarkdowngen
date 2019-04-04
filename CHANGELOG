@@ -1,3 +1,17 @@
+2019-04-04  PICCORO Lenz McKAY <mckaygerhard@gmail.com>
+
+* very basic but support for class documentation not only functions
+* only unix line feed, for new lines in generated table rows
+* added funtion to exten info as paragras and funtions as lists
+* make all tags not specified with default such like "void"
+* limit descriptions to firts 50 chars phpdoc defines firts line as is
+* property document the code
+* upgrade version of class ClassMarkdown
+* separate with a space the funtions tags when are new line
+* property init variables if tag (such like version) does not exits
+* all the title class are not level 2 "h2", was level 3
+* added code documentation in the README
+
 2018-11-22  PICCORO Lenz McKAY <mckaygerhard@gmail.com>
 
 * initialize repo with simple README and simple target ! 

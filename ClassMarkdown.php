@@ -3,27 +3,28 @@ include_once(__DIR__ . '/ClassParser.php');
 include_once(__DIR__ . '/TextTable.php');
 
 /**
- * Class Markdown Docs
+ * class implementation to output markdown text from class file comments
+ * 
  * @author Marco Cesarato <cesarato.developer@gmail.com>
  * @author PICCORO Lenz McKAY <mckaygerhard@gmail.com>
  * @copyright Copyright (c) 2018, 2019
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
  * @link https://github.com/marcocesarato/PHP-Class-Markdown-Docs
- * @version 0.1.9
+ * @version 0.1.10 (2019-04-05)
  */
 class ClassMarkdown
 {
-    public $file;
 
     /**
-     * ClassMarkdown constructor.
+     * ClassMarkdown constructor
+     * @param none
      */
     public function __construct()
     {
     }
 
     /**
-     * Parse a given class var
+     * a given class funtions as array keys
      * @param $class
      * @return array
      */
@@ -48,12 +49,12 @@ class ClassMarkdown
                     $line = str_replace('return ', '', $line);
                     $return = $line;
                 } else {
-                    $description[] = substr($line,0,40);
+                    $description[] = substr($line,0,50);
                 }
             }
-            $row[] = implode('<br>', $description);
-            $row[] = implode('<br>', $value['modifiers']);
-            $row[] = implode('<br>', $parameters);
+            $row[] = implode(' <br> ', $description);
+            $row[] = implode(' <br> ', $value['modifiers']);
+            $row[] = implode(' <br> ', $parameters);
             $row[] = $return;
             $rows[] = $row;
         }
@@ -62,7 +63,7 @@ class ClassMarkdown
 
 
     /**
-     * Parse a given class var for extended info
+     * a given class tags as markdown formated paragraph
      * @param $class
      * @return string
      */
@@ -72,11 +73,12 @@ class ClassMarkdown
         $autor = '';
         $description = NULL;
         $coping = '(c) '.date('Y');
+        $version = '';
         $class['doc'] = trim(str_replace(array("\r", "*", "/", '|'), array('', '', '', '', '\|'), $class['doc']));
         $class['doc'] = explode("\n", $class['doc']);
         foreach ($class['doc'] as $line) {
             if (is_null($description)){
-                $description = substr($line,0,50);
+                $description = substr($line,0,55);
             }
             if (strpos($line, 'uthor') !== FALSE) {
                 $line = str_replace('@author ', '', $line);
@@ -118,7 +120,7 @@ class ClassMarkdown
         $classes = $cp->getClasses();
         foreach ($classes as $k => $class) {
             $class['name'] = $k;
-            $result .= "### " . $class['name'] . PHP_EOL . PHP_EOL;
+            $result .= "## " . $class['name'] . PHP_EOL . PHP_EOL;
             $rows = self::parseClass($class);
             $columns = ['Method', 'Description', 'Type', 'Parameters', 'Return'];
             $result .= self::parseExtended($class);
@@ -139,7 +141,7 @@ class ClassMarkdown
     }
 
     /**
-     * Get php array class documentation
+     * Get PHP file as array class documentation
      * @param $file
      * @return array
      */

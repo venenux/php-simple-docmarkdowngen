@@ -1,30 +1,33 @@
 <?php
 /**
- * Creates a markdown document based on the parsed documentation
+ * Creates a markdown table based on the parsed documentation
  *
  * @author Peter-Christoph Haider <peter.haider@zeyon.net>
+ * @author PICCORO Lenz MCKAY <mckaygerhard@gmail.com>
  * @package Apidoc
  * @version 1.00 (2014-04-04)
  * @license GNU Lesser Public License
  */
 class TextTable {
-	/** @var int The source path */
+	/** @var int max leng of descriptions */
 	public $maxlen = 50;
-	/** @var array The source path */
+	/** @var array data to be procesed */
 	private $data = array();
-	/** @var array The source path */
+	/** @var array header of the table output text */
 	private $header = array();
 	/** @var array The source path */
 	private $len = array();
-	/** @var array The source path */
+	/** @var array alingment of the headers columns */
 	private $align = array(
 		'name' => 'L',
 		'type' => 'C'
 	);
 
 	/**
+	 * can init the default values to markdown text table
+	 * 
 	 * @param array $header  The header array [key => label, ...]
-	 * @param array $content Content
+	 * @param array $content Content table as matrix of tags funtions
 	 * @param array $align   Alignment optios [key => L|R|C, ...]
 	 */
 	public function __construct($header=null, $content=array(), $align=false) {
@@ -55,9 +58,10 @@ class TextTable {
 	}
 
 	/**
-	 * Add data to the table
+	 * Add data to the table from matrix array tags class
 	 *
-	 * @param array $content Content
+	 * @param array $content Content matrix of tags class
+	 * @return class self object class with data content populated
 	 */
 	public function addData($content) {
 		foreach ($content as &$row) {
@@ -77,7 +81,7 @@ class TextTable {
 	}
 
 	/**
-	 * Add a delimiter
+	 * Add a delimiter based on aling of the class setted
 	 *
 	 * @return string
 	 */
@@ -92,7 +96,7 @@ class TextTable {
 	}
 
 	/**
-	 * Render a single row
+	 * Render a single row for markdown table
 	 *
 	 * @param  array $row
 	 * @return string
@@ -107,7 +111,7 @@ class TextTable {
 	}
 
 	/**
-	 * Render the table
+	 * Render the table text as markdown
 	 *
 	 * @param  array  $content Additional table content
 	 * @return string
@@ -115,8 +119,7 @@ class TextTable {
 	public function render($content=array()) {
 		$this->addData($content);
 
-		$res = $this->renderRow($this->header)
-		       .$this->renderDelimiter();
+		$res = $this->renderRow($this->header).$this->renderDelimiter();
 		foreach ($this->data as $row)
 			$res .= $this->renderRow($row);
 
