@@ -26,7 +26,7 @@ See documentation below in documentation section.
 #### Usage
 
 ```php
-php "include 'ClassMarkdown.php'; ClassMarkdown::printMarkdown('CoreClass.php');" >> ver.md
+php -r "include 'ClassMarkdown.php';ClassMarkdown::printMarkdown('ClassMarkdown.php');"
 ```
 
 
